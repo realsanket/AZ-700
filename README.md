@@ -1,4 +1,2 @@
-# AZ-700
-The goal of this repository is to create a comprehensive, organized set of resources to help me efficiently prepare for the AZ-700 exam, ensuring that I cover all key areas and practice the necessary skills
-
-s
+# AZ-700(Azure Network Engineer Associate)
+The goal of this repository is to serve as a comprehensive study guide for the AZ-700 exam. This is a work in progress and will be updated continuously as I cover more exam objectives. It includes detailed notes and explanations for each topic based on my understanding. Contributions are welcome; feel free to create a pull request if you wish to add content or correct any errors.
