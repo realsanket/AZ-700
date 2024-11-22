@@ -266,3 +266,21 @@ resource "azurerm_public_ip" "example" {
   allocation_method   = "Static"
 }
 ```
+
+## Custom IP Address Prefix (Bring Your Own IP)
+
+A custom IP address prefix is a contiguous range of IP addresses owned by an external customer and provisioned into a subscription. Microsoft is permitted to advertise the range. Addresses from a custom IP address prefix can be used in the same way as Azure-owned public IP address prefixes. These addresses can be associated with Azure resources, interact with internal/private IPs and virtual networks, and reach external destinations outbound from the Azure Wide Area Network.
+
+### Retain IP Ranges (BYOIP)
+
+Retaining IP ranges allows you to maintain established reputation and continue to pass through externally controlled allowlists.
+
+### Three-Phase Process to Bring an IP Prefix to Azure
+
+1. **Validation**: Verify that the IP prefix is owned by you and can be brought to Azure.
+2. **Provision**: Provision the IP prefix into your Azure subscription.
+3. **Commission**: Commission the IP prefix to be used with Azure resources.
+
+Learn more about Custom IP address prefix (BYOIP) - [Azure Virtual Network | Microsoft Learn](https://learn.microsoft.com/azure/virtual-network/ip-services/custom-ip-address-prefix)
+
+![alt text](./images/image%20copy%206.png)
