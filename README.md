@@ -1,2 +1,76 @@
 # AZ-700(Azure Network Engineer Associate)
+
 The goal of this repository is to serve as a comprehensive study guide for the AZ-700 exam. This is a work in progress and will be updated continuously as I cover more exam objectives. It includes detailed notes and explanations for each topic based on my understanding. Contributions are welcome; feel free to create a pull request if you wish to add content or correct any errors.
+
+## **Virtual Networks (VNet)**  
+
+A virtual network is a logical representation of your own network. Virtual networks can be used in cloud and hybrid cloud scenarios. When creating a virtual network, you will need to define the address space and create at least one subnet. Subnets in the virtual network subnet must have a unique address range that does not overlap with other subnets. Also consider traffic control, resource isolation, and topology.Azure VNet enables resources in Azure to securely communicate with each other, the internet, and on-premises networks.
+
+- **Capabilities of Azure Virtual Networks**
+  - **Communication with the internet**: All resources in a VNet can communicate outbound to the internet by default. You can communicate inbound to a resource by assigning a public IP address or a public Load Balancer. You can also use public IP or public Load Balancer to manage your outbound connections.
+  - **Communication between Azure resources**: There are three key mechanisms through which Azure resources can communicate: VNets, VNet service endpoints, and VNet peering. Virtual Networks can connect not only VMs but other Azure resources, such as the App Service Environment, Azure Kubernetes Service, and Azure VM Scale sets. You can use service endpoints to connect to other Azure resource types, such as Azure SQL databases and storage accounts. When you create a VNet, your services and VMs within your VNet can communicate directly and securely with each other in the cloud.
+  - **Communication between on-premises resources**: Securely extend your data center. You can connect your on-premises computers and networks to a virtual network using any of the following options: Point-to-site virtual private network (VPN), Site-to-site VPN, Azure ExpressRoute.
+  - **Filtering network traffic**: You can filter network traffic between subnets using any combination of network security groups and network virtual appliances like firewalls, gateways, proxies, and Network Address Translation (NAT) services.
+  - **Routing network traffic**: Azure routes traffic between subnets, connected virtual networks, on-premises networks, and the Internet by default. You can implement route tables or border gateway protocol (BGP) routes to override the default routes Azure creates.
+  
+**Enterprise Relevance**: Core component for any cloud architecture.
+
+![alt text](./images/image.png)
+
+### **Virtual Network Address Space**
+
+Virtual network address space is the range of IP addresses that you can use for your resources in a virtual network. When you create a virtual network, you must specify a custom private IP address space using public and private (RFC 1918) addresses. Azure assigns resources in a virtual network a private IP address from the address space that you assign. For example, if you deploy a VM in a VNet with address space
+
+### **Private IP Address Space (RFC 1918)**
+
+When creating a VNet, you must specify a custom private IP address space using public and private (RFC 1918) addresses. Azure assigns resources in a virtual network a private IP address from the address space that you assign. For example, if you deploy a VM in a VNet with address space 10.0.0.0/16, the VM will be assigned a private IP like 10.0.0.4.
+
+#### **RFC 1918 Address Ranges:**
+
+- **10.0.0.0 - 10.255.255.255** (10/8 prefix)
+- **172.16.0.0 - 172.31.255.255** (172.16/12 prefix)
+- **192.168.0.0 - 192.168.255.255** (192.168/16 prefix)
+
+#### **Azure Reserved IP Addresses:**
+
+- **x.x.x.0**: Network address
+- **x.x.x.1**: Reserved by Azure for the default gateway
+- **x.x.x.2, x.x.x.3**: Reserved by Azure to map the Azure DNS IPs to the VNet space
+- **x.x.x.255**: Network broadcast address
+
+#### **Unavailable Address Ranges:**
+
+- **224.0.0.0/4** (Multicast)
+- **255.255.255.255/32** (Broadcast)
+- **127.0.0.0/8** (Loopback)
+- **169.254.0.0/16** (Link-local)
+- **168.63.129.16/32** (Internal DNS)
+
+## Subnets
+
+A virtual network can be segmented into one or more subnets Subnets provide logical divisions within your network Subnets can help improve security, increase performance, and make it easier to manage the network
+Each subnet must have a unique address range – cannot overlap with other subnets in the virtual network in the subscription
+✔️  Azure reserves 5 IP addresses within each subnet.
+
+You can segment VNets into smaller subnets, creating as many subnets as you require within the subscription limit. You can then deploy Azure resources in a specific subnet. Just like in a traditional network, subnets allow you to segment your VNet address space into segments that are appropriate for the organization's internal network. This also improves address allocation efficiency.
+
+When planning to implement subnets, consider the following:
+
+- Each subnet must have a unique address range, specified in Classless Inter-Domain Routing (CIDR) format.
+- Certain Azure services require their own subnet.
+- Subnets can be used for traffic management. For example, you can create subnets to route traffic through a network virtual appliance.
+- You can limit access to Azure resources to specific subnets with a virtual network service endpoint. You can create multiple subnets and enable a service endpoint for some subnets, but not others.
+- You can secure resources within subnets using Network Security Groups.
+
+**Enterprise Relevance**: Organizing resources, managing traffic, and security boundaries.
+
+### Azure Reserved IP Addresses:**
+
+- **x.x.x.0**: Network address
+- **x.x.x.1**: Reserved by Azure for the default gateway
+- **x.x.x.2, x.x.x.3**: Reserved by Azure to map the Azure DNS IPs to the VNet space
+- **x.x.x.255**: Network broadcast address
+
+**Enterprise Relevance**: Organizing resources, managing traffic, and security boundaries.
+
+![alt text](./images/image%20copy.png)
