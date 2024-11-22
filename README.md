@@ -190,3 +190,79 @@ resource "azurerm_subnet" "example" {
 
 ![alt text](./images/image%20copy%203.png)
 
+## Public IP Addresses
+
+Public IP addresses enable Azure resources to communicate to the internet, and to other Azure resources.
+
+In Azure Resource Manager, a public IP address is a resource that has its own properties. Some of the resources you can associate a public IP address resource with include:
+
+- Virtual machine network interfaces
+- Virtual machine scale sets
+- Public Load Balancers
+- Virtual Network Gateways (VPN/ER)
+- NAT gateways
+- Application Gateways
+- Azure Firewall
+- Bastion Host
+- Route Server
+
+For the full chart of resources, see here: [Public IP addresses in Azure - Azure Virtual Network](https://docs.microsoft.com/azure/virtual-network/ip-services/public-ip-addresses#at-a-glance)
+
+Public IP addresses are created with an IPv4 or IPv6 address, which can be either static or dynamic.
+
+- **Dynamic Public IP Address**: A dynamic public IP address is an assigned address that can change over the lifespan of the Azure resource. The dynamic IP address is allocated when you create or start a VM. The IP address is released when you stop or delete the VM. In each Azure region, public IP addresses are assigned from a unique pool of addresses. The default allocation method is dynamic.
+- **Static Public IP Address**: A static public IP address is an assigned address that will not change over the lifespan of the Azure resource. To ensure that the IP address for the resource remains the same, set the allocation method explicitly to static. In this case, an IP address is assigned immediately. It is released only when you delete the public IP resource or change the IP allocation method to dynamic.
+
+Learn more about Public IP addresses - [Public IP addresses in Azure](https://docs.microsoft.com/azure/virtual-network/public-ip-addresses)
+
+![alt text](./images/image%20copy%204.png)
+
+### Choose the appropriate SKU for a public IP
+
+For public IP addresses, there are two types of SKUs to choose from: Basic and Standard. All public IP addresses created before the introduction of SKUs are Basic SKU public IP addresses. With the introduction of SKUs, you have the option to specify which SKU you would like the public IP address to be.
+
+On September 30, 2025, Basic SKU public IPs will be retired. Learn more here: [Public IP Upgrade Portal](https://learn.microsoft.com/azure/virtual-network/ip-services/public-ip-upgrade-portal)
+
+- **Basic SKU**: Basic SKU public IPs can be assigned using static or dynamic allocation methods. Basic IPs are open by default, so the use of Network Security Groups (NSGs) is recommended but optional for restricting inbound or outbound traffic. Basic public IPs can be assigned to any Azure resource that can be assigned a public IP address, such as network interfaces, VPN gateways, application gateways, and internet-facing load balancers. They do not support availability zone scenarios. You must use a Standard SKU public IP for an availability zone scenario.
+- **Standard SKU**: Standard SKU public IP addresses always use the static allocation method. Standard IPs are secure by default and closed to inbound traffic. You must explicitly allow inbound traffic by using a network security group. Standard IPs can be assigned to network interfaces, Standard public load balancers, application gateways, or VPN gateways. Standard IPs are zone-redundant by default and optionally zonal (they can be created zonal and guaranteed in a specific availability zone).
+
+Basic SKU IPv4 addresses can be upgraded after creation to Standard SKU. A standalone virtual machine, virtual machines within an availability set, or virtual machine scale sets can use Basic or Standard SKUs. Mixing SKUs between virtual machines within availability sets or scale sets or standalone VMs is not allowed.
+
+Upgrade to Standard SKU public IP addresses in Azure by September 30, 2025—Basic SKU will be retired. Learn more here: [Upgrade to Standard SKU](https://azure.microsoft.com/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/)
+
+![alt text](./images/image%20copy%205.png)
+
+### Create a Public IP Address using Azure CLI
+
+```bash
+# filepath: /path/to/azure-cli/commands.sh
+az network public-ip create \
+  --name example-public-ip \
+  --resource-group example-resources \
+  --allocation-method Static
+```
+
+### Create a Public IP Address using Bicep
+
+```bicep
+// filepath: /path/to/bicep/main.bicep
+resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+  name: 'example-public-ip'
+  location: rg.location
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
+}
+```
+
+### Create a Public IP Address using Terraform
+
+```txt
+# filepath: /path/to/terraform/main.tf
+resource "azurerm_public_ip" "example" {
+  name                = "example-public-ip"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  allocation_method   = "Static"
+}
+```
