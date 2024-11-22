@@ -96,3 +96,97 @@ All Azure resources are created in an Azure region and subscription. A resource 
 Azure datacenters exist in many regions worldwide. When selecting multiple Azure datacenters, consider two related factors: geographical distances and latency. To optimize user experience, evaluate the distance between each virtual datacenter as well as the distance from each virtual datacenter to the end users. An Azure region that hosts your virtual datacenter must conform with regulatory requirements of any legal jurisdiction under which your organization operates.
 
 ![alt text](./images/image%20copy%202.png)
+
+## Create a Virtual Network
+
+Create a virtual network using the Azure portal - [Azure Portal QuickStart](https://docs.microsoft.com/azure/virtual-network/quick-create-portal)
+
+✔️ Always plan to use an address space that is not already in use in your organization, either on-premises or in other VNets. Even if you plan for a VNet to be cloud-only, you may want to make a VPN connection to it later. If there is any overlap in address spaces at that point, you will have to reconfigure or recreate the VNet. The next lesson will focus on IP addressing.
+
+### Best Practices
+
+As you build your network in Azure, it is important to keep in mind the following universal design principles:
+
+- **Ensure non-overlapping address spaces**: Make sure your VNet address space (CIDR block) does not overlap with your organization's other network ranges.
+- **Reserve address space for the future**: Your subnets should not cover the entire address space of the VNet. Plan ahead and reserve some address space for the future.
+- **Fewer large VNets**: It is recommended you have fewer large VNets rather than multiple small VNets. This will prevent management overhead. (5 IP addresses are not usable per subnet due to Azure reserving them)
+- **Secure your VNets**: Secure your VNets by assigning Network Security Groups (NSGs) to the subnets beneath them.
+
+### Create a Virtual Network using Azure CLI
+
+```bash
+# filepath: /path/to/azure-cli/commands.sh
+az group create --name example-resources --location eastus
+
+az network vnet create \
+  --name example-vnet \
+  --resource-group example-resources \
+  --address-prefix 10.0.0.0/16
+
+az network vnet subnet create \
+  --address-prefix 10.0.1.0/24 \
+  --name example-subnet \
+  --resource-group example-resources \
+  --vnet-name example-vnet
+```
+
+### Create a Virtual Network using Bicep
+
+```bicep
+// filepath: /path/to/bicep/main.bicep
+resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: 'example-resources'
+  location: 'East US'
+}
+
+resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' = {
+  name: 'example-vnet'
+  location: rg.location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
+  }
+}
+
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' = {
+  name: 'example-subnet'
+  parent: vnet
+  properties: {
+    addressPrefix: '10.0.1.0/24'
+  }
+}
+```
+
+### Create a Virtual Network using Terraform
+
+```txt
+# filepath: /path/to/terraform/main.tf
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-resources"
+  location = "East US"
+}
+
+resource "azurerm_virtual_network" "example" {
+  name                = "example-vnet"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+}
+
+resource "azurerm_subnet" "example" {
+  name                 = "example-subnet"
+  resource_group_name  = azurerm_resource_group.example.name
+  virtual_network_name = azurerm_virtual_network.example.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+```
+
+![alt text](./images/image%20copy%203.png)
+
