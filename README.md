@@ -74,3 +74,25 @@ When planning to implement subnets, consider the following:
 **Enterprise Relevance**: Organizing resources, managing traffic, and security boundaries.
 
 ![alt text](./images/image%20copy.png)
+
+## Understand Regions and Subscriptions
+
+### Regions
+
+A VNet is scoped to a single region/location; however, multiple virtual networks from different regions can be connected using Virtual Network Peering.
+[Learn more about Microsoft's global network](https://docs.microsoft.com/azure/networking/microsoft-global-network)  
+[Learn more about VNet planning and design](https://docs.microsoft.com/azure/virtual-network/virtual-network-vnet-plan-design-arm#connectivity)
+
+### Subscriptions
+
+All Azure resources are created in an Azure region and subscription. A resource can only be created in a virtual network that exists in the same region and subscription as the resource. However, you can connect virtual networks that exist in different subscriptions and regions. When deciding which region(s) to deploy resources in, consider where consumers of the resources are physically located:
+
+- **Network Latency**: Consumers of resources typically want the lowest network latency to their resources. To determine relative latencies between a specified location and Azure regions, see [View relative latencies](https://docs.microsoft.com/azure/network-watcher/view-relative-latencies?toc=/azure/virtual-network/toc.json).
+- **Data Residency, Sovereignty, Compliance, or Resiliency Requirements**: If you have such requirements, choosing the region that aligns with them is critical. For more information, see [Azure geographies](https://azure.microsoft.com/global-infrastructure/geographies/).
+- **Resiliency Across Availability Zones**: Do you require resiliency across Azure Availability Zones within the same Azure region for the resources you deploy? You can deploy resources, such as virtual machines (VM), to different availability zones within the same virtual network. Not all Azure regions support availability zones. To learn more about availability zones and the regions that support them, see [Availability zones](https://docs.microsoft.com/azure/availability-zones/az-overview?toc=/azure/virtual-network/toc.json).
+
+### Regional/Global Presence
+
+Azure datacenters exist in many regions worldwide. When selecting multiple Azure datacenters, consider two related factors: geographical distances and latency. To optimize user experience, evaluate the distance between each virtual datacenter as well as the distance from each virtual datacenter to the end users. An Azure region that hosts your virtual datacenter must conform with regulatory requirements of any legal jurisdiction under which your organization operates.
+
+![alt text](./images/image%20copy%202.png)
