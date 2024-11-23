@@ -308,7 +308,6 @@ A DNS zone hosts the DNS records for a domain. The same zone name can be reused 
 - **Name Server Addresses**: When multiple zones share the same name, each instance is assigned different name server addresses. This ensures that DNS queries are directed to the correct instance of the DNS zone.
 - **Root/Parent Domain Registration**: The root or parent domain is registered at the domain registrar and pointed to Azure Name Servers. This allows Azure DNS to manage the DNS records for the domain.
 
-
 Learn more about Azure DNS - [What is Azure DNS? | Microsoft Docs](https://docs.microsoft.com/azure/dns/dns-overview)
 
 ![alt text](./images/image%20copy%208.png)
@@ -320,6 +319,7 @@ When delegating a domain to Azure DNS, you must use the name server names provid
 For child zones, register the NS records in the parent domain to delegate the child zone.
 
 ![alt text](./images/image%20copy%209.png)
+
 ### DNS Record Types
 
 A record set is a collection of records in a zone that have the same name and are of the same type. Azure DNS supports all common DNS record types, including A, AAAA, CAA, CNAME, MX, NS, PTR, SOA, SRV, and TXT.
