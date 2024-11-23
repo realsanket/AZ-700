@@ -284,3 +284,57 @@ Retaining IP ranges allows you to maintain established reputation and continue t
 Learn more about Custom IP address prefix (BYOIP) - [Azure Virtual Network | Microsoft Learn](https://learn.microsoft.com/azure/virtual-network/ip-services/custom-ip-address-prefix)
 
 ![alt text](./images/image%20copy%206.png)
+
+## Public DNS
+
+The Domain Name System (DNS) is a hierarchical and decentralized naming system for computers, services, or other resources connected to the Internet or a private network. It associates various information with domain names assigned to each of the participating entities. Most prominently, it translates more readily memorized domain names to the numerical IP addresses needed for locating and identifying computer services and devices with the underlying network protocols.
+
+Public DNS services resolve names and IP addresses for resources and services accessible over the internet such as web servers.
+In Azure DNS, you can manually create address records within relevant zones. The most frequently used records are:
+
+- **Host records**: A (IPv4) / AAAA (IPv6)
+- **Alias records**: CNAME
+
+![alt text](./images/image%20copy%207.png)
+
+## Azure DNS Zones
+
+A DNS zone hosts the DNS records for a domain. The same zone name can be reused in a different resource group or a different Azure subscription. When multiple zones share the same name, each instance is assigned different name server addresses.
+
+### Key Points
+
+- **DNS Zone Hosting**: A DNS zone is a container for DNS records of a specific domain. It allows you to manage the DNS records for that domain.
+- **Reuse of Zone Names**: The same DNS zone name can be reused in different resource groups or Azure subscriptions. This means you can have multiple instances of the same DNS zone name, each managed independently.
+- **Name Server Addresses**: When multiple zones share the same name, each instance is assigned different name server addresses. This ensures that DNS queries are directed to the correct instance of the DNS zone.
+- **Root/Parent Domain Registration**: The root or parent domain is registered at the domain registrar and pointed to Azure Name Servers. This allows Azure DNS to manage the DNS records for the domain.
+
+
+Learn more about Azure DNS - [What is Azure DNS? | Microsoft Docs](https://docs.microsoft.com/azure/dns/dns-overview)
+
+![alt text](./images/image%20copy%208.png)
+
+### DNS Delegation
+
+When delegating a domain to Azure DNS, you must use the name server names provided by Azure DNS. It is important to use all four name servers provided. Once the DNS zone is created, update the parent registrar with these name server names.
+
+For child zones, register the NS records in the parent domain to delegate the child zone.
+
+![alt text](./images/image%20copy%209.png)
+### DNS Record Types
+
+A record set is a collection of records in a zone that have the same name and are of the same type. Azure DNS supports all common DNS record types, including A, AAAA, CAA, CNAME, MX, NS, PTR, SOA, SRV, and TXT.
+
+- **A Record**: Maps a domain name to an IPv4 address.
+- **AAAA Record**: Maps a domain name to an IPv6 address.
+- **CAA Record**: Specifies which certificate authorities are allowed to issue certificates for a domain.
+- **CNAME Record**: Maps a domain name to another domain name (alias).
+- **MX Record**: Specifies the mail servers for a domain.
+- **NS Record**: Specifies the authoritative name servers for a domain.
+- **PTR Record**: Maps an IP address to a domain name (reverse DNS lookup).
+- **SOA Record**: Contains administrative information about the zone.
+- **SRV Record**: Specifies the location of services.
+- **TXT Record**: Allows you to associate arbitrary text with a domain.
+
+A record set cannot contain two identical records. Changing the drop-down Type in the Azure portal changes the information required for the record set.
+
+![alt text](./images/image%20copy%2010.png)
